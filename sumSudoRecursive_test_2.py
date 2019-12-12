@@ -171,7 +171,11 @@ def find_next_cell(grid):
         return(-1,-1)
         
 def is_valid(grid,i,j,e):
-    """ Check if this value e is Sudoku valid in position i,j"""
+    """ 
+    Check if this value e is Sudoku valid in position i,j.
+    The basic sudoku rules apply:
+    The suggested "e" must be unique number in column, row and subgrid.
+    """
     col = j
     row = i
     brow,bcol = Struct.data_val[(i,j)] #get slices for a 3X3 submatrix
@@ -259,6 +263,9 @@ def start_sumSudo(grid,coord):
 #This procedure solves the Sudoku one step at the time
   
 def sumSudo_solver(grid,coord,stat):
+    """
+    Solve the sum sudoku puzzele taking into consideration the position and sum constraints
+    """
     #find next empty cell to fill
     i,j = find_next_cell(grid)
     if i == -1: return True #The end
@@ -278,6 +285,8 @@ def sumSudo_solver(grid,coord,stat):
             #failed attempt
             #undo current cell for back track
             stat.backtrack += 1
+            #A long execution with many backtacks. 
+            #Generate a life sign every X backtracks
             if stat.backtrack%3000000 == 0:
                 print(stat.backtrack,(i,j))
             stat.backtrack_distr[(i,j)] += 1
